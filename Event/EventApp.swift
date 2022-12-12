@@ -11,7 +11,7 @@ import SwiftUI
 struct EventApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            CarouselExample()
         }
     }
 }
