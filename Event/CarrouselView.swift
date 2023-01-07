@@ -5,15 +5,36 @@
 import SwiftUI
 
 struct Day: View {
+    let events: [EventItem]
     var body: some View {
-        List {
-            
-        }
-        VStack {
-            ForEach(0 ..< 24) { index in
-                Text("\(index):00").frame(maxWidth: .infinity, minHeight: 100)
+        HStack(spacing: 0) {
+            VStack(spacing: 0) {
+                ForEach(8 ..< 21) { index in
+                    Text("\(index):00").frame(height: 60, alignment: .bottomLeading).padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 4))
+                }
+            }
+            Divider().padding(0)
+            ZStack(alignment: .topLeading) {
+                VStack {
+                    ForEach(8 ..< 21) { _ in
+                        Spacer(minLength: 60)
+                        Divider()
+                    }
+                }
+                ForEach(events, id: \.self.start) { event in
+                    let height = CGFloat(event.end - event.start);
+                    let offset = CGFloat(event.start - 8 * 60);
+                    /*@START_MENU_TOKEN@*/Text(event.name)/*@END_MENU_TOKEN@*/
+                        .frame(height: height)
+                        .frame(maxWidth: .infinity)
+                        .background(event.color)
+                        .cornerRadius(8)
+                        .offset(y: offset)
+                        .padding(2)
+                }
             }
         }
+        .frame(maxWidth: .infinity).padding(8)
     }
 }
 
@@ -91,8 +112,26 @@ struct Carousel<Content: View>: View {
 
 let color = [Color.red, Color.blue,  Color.yellow];
 
+struct EventItem {
+    let start: UInt16
+    let end: UInt16
+    let name: String
+    let color: Color
+}
+
 struct CarouselExample: View {
-    @StateObject private var state = CarouselState(count: color.count)
+    @StateObject private var state = CarouselState(count: 3)
+    
+    let program = [
+        [
+            EventItem(start: 540, end: 570, name: "Breakfast", color: Color.red),
+            EventItem(start: 570, end: 690, name: "Welcom Breakfast", color: Color.blue)
+        ],
+        [
+        ],
+        [
+        ]
+    ]
     var body: some View {
         VStack(alignment: .center)  {
             HStack {
@@ -104,7 +143,7 @@ struct CarouselExample: View {
                     Text("next")
                 }.disabled(!state.has_next())
             }
-            Carousel(state: state, content: {(i) in Day().background(color[i]) })
+            Carousel(state: state, content: {(i) in Day(events: program[i]) })
         }
     }
 }
