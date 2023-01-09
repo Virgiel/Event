@@ -1,15 +1,13 @@
 import SwiftUI
 
 class CarouselState: ObservableObject {
-    let count: Int
+    @Published var count: Int
     @Published var selected: Int;
 
     init(count: Int, selected: Int = 0) {
-        assert(count >= 0 && selected >= 0 && selected < count)
         self.count = count;
         self.selected = selected;
     }
-
 
     func has_next() -> Bool {
         selected < count - 1
@@ -74,58 +72,3 @@ struct Carousel<Content: View>: View {
 }
 
 let color = [Color.red, Color.blue, Color.yellow];
-
-struct EventItem {
-    let start: UInt16
-    let end: UInt16
-    let name: String
-    let color: Color
-}
-
-struct CarouselExample: View {
-    @StateObject private var state = CarouselState(count: 3)
-
-    let program = [
-        [
-            EventItem(start: 540, end: 570, name: "Breakfast", color: Color.red),
-            EventItem(start: 570, end: 690, name: "Welcom Breakfast", color: Color.blue)
-        ],
-        [
-        ],
-        [
-        ]
-    ]
-    var body: some View {
-        NavigationView {
-            VStack(spacing: 0) {
-                VStack(alignment: .center, spacing: 0) {
-                    HStack {
-                        ForEach(0..<program.count, id: \.self) { i in
-                            let background = state.selected == i ? Color.accentColor : Color.clear
-                            let text = state.selected == i ? Color.white : Color.primary
-                            Button(action: { state.selected = i }) {
-                                Text("\(i)").foregroundColor(text)
-                            }
-                                    .frame(width: 35, height: 35)
-                                    .background(background)
-                                    .clipShape(Capsule())
-                        }
-                    }
-                    Spacer().frame(height: 10)
-                    Divider()
-                }
-                        .frame(maxWidth: .infinity)
-                        .background(Color(.systemFill))
-                Carousel(state: state, content: { (i) in Day(events: program[i]) })
-            }
-
-        }
-    }
-}
-
-
-struct Carousel_Previews: PreviewProvider {
-    static var previews: some View {
-        CarouselExample()
-    }
-}

@@ -1,33 +1,103 @@
 import SwiftUI
 
+func fmtMinutes(_ minutes: Int) -> String {
+    return String(format: "%dh%02d", minutes/60, minutes%60)
+}
+
+func fmtEvent(_ minutes: ClosedRange<Int>) -> String {
+    return "\(fmtMinutes(minutes.first!)) - \(fmtMinutes(minutes.last!)) · \(minutes.count - 1) min"
+}
+
+let daySize = CGFloat(120)
+
+struct EventDetailView: View {
+    let model: ViewModel
+    let minutes: ClosedRange<Int>
+    let schedule: Schedule
+    var body: some View {
+        List {
+            let color = scheduleColor[schedule.type]
+            VStack(alignment: .leading, spacing: 4) {
+                Text(schedule.type).foregroundColor(color)
+                Text(fmtEvent(minutes))
+                Text(schedule.location)
+            }
+            
+            if let speakers = schedule.speakers {
+                Section {
+                    ForEach(speakers, id: \.self) { id in
+                        PeopleView(people: model.speakers[id]!)
+                    }
+                } header: {
+                    Text("Speakers")
+                }
+            }
+            
+            if let note = schedule.note {
+                Section {
+                    Text(note)
+                } header: {
+                    Text("Notes")
+                }
+            }
+        }
+        .navigationTitle(schedule.activity)
+        .onAppear {
+            print(model.speakers)
+            print(schedule.speakers)
+        }
+    }
+}
+
 struct EventView: View {
     @State private var isShowingDetailView = false
-    let event: EventItem
+    let model: ViewModel
+    let schedule: Schedule
+    let minutes: ClosedRange<Int>
     var body: some View {
-        let height = CGFloat(event.end - event.start);
+        // let height = CGFloat(minutes.count) * 2; TODO get our beautiful UI back on track
         NavigationLink {
-            EventDetailView(event: event)
+            EventDetailView(model: model, minutes: minutes, schedule: schedule)
         } label: {
-            Text(event.name)
-                    .frame(height: height)
-                    .frame(maxWidth: .infinity)
-                    .background(event.color)
-                    .cornerRadius(8)
-                    .padding(2)
+            let color = scheduleColor[schedule.type]
+            VStack(alignment: .leading, spacing: 0) {
+                HStack(spacing: 0) {
+                    Text(schedule.activity).bold()
+                    Spacer(minLength: 4)
+                    Text(schedule.type).foregroundColor(color)
+                }
+                Text(fmtEvent(minutes))
+                Text(schedule.location)
+                Spacer(minLength: 0)
+            }//.frame(height: height)
+                .frame(maxWidth: .infinity)
+                .padding(8)
+                .background(color.opacity(0.2))
+                .cornerRadius(8)
 
         }
                 .buttonStyle(PlainButtonStyle())
     }
 }
 
+// As two events can happen at the same time, our beautiful UI cannot handle them.
+// We sadly do not have enough time to handle this ... :/
+
 struct Day: View {
-    let events: [EventItem]
+    let model: ViewModel
+    let hours: Range<Int>
+    let events: [(ClosedRange<Int>, Schedule)]
     var body: some View {
-        HStack(spacing: 0) {
+        VStack {
+            ForEach(events, id: \.self.1.activity) { (minutes, schedule) in
+                EventView(model: model, schedule: schedule, minutes: minutes)
+            }
+        }.padding(8)
+        /*HStack(spacing: 0) {
             VStack(spacing: 0) {
-                ForEach(8..<21) { index in
+                ForEach(0..<22) { index in
                     Text("\(index):00")
-                            .frame(height: 60, alignment: .bottomLeading)
+                            .frame(height: daySize, alignment: .bottomLeading)
                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 4))
                             .offset(y: 8)
                 }
@@ -36,25 +106,16 @@ struct Day: View {
             ZStack(alignment: .topLeading) {
                 VStack {
                     ForEach(8..<21) { _ in
-                        Spacer(minLength: 60)
+                        Spacer(minLength: daySize)
                         Divider()
                     }
                 }
-                ForEach(events, id: \.self.start) { event in
-                    let offset = CGFloat(event.start - 8 * 60);
-                    EventView(event: event).offset(y: offset)
+                ForEach(events, id: \.self.1.activity) { (minutes, schedule) in
+                    let offset = CGFloat(minutes.first!) * 2// - CGFloat(hours.first!) * daySize;
+                    EventView(schedule: schedule, minutes: minutes).offset(y: offset)
                 }
             }
         }
-                .frame(maxWidth: .infinity).padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
-    }
-}
-
-struct DayView_Previews: PreviewProvider {
-    static var previews: some View {
-        Day(events: [
-            EventItem(start: 540, end: 570, name: "Breakfast", color: Color.red),
-            EventItem(start: 570, end: 690, name: "Welcom Breakfast", color: Color.blue)
-        ])
+                .frame(maxWidth: .infinity).padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))*/
     }
 }
