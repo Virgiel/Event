@@ -54,7 +54,7 @@ struct DBClient {
     }
     func getSchedule (_ schedule: [Schedule]?) -> Void {
         let session = URLSession(configuration: .default)
-        let task = session.dataTask(with: createRequest(Event.table_schedule)) {
+        /*let task = session.dataTask(with: createRequest(Event.table_schedule)) {
             (data, response, error) in
             if let data = data, error == nil {
                 if let responseHttp = response as? HTTPURLResponse {
@@ -66,7 +66,7 @@ struct DBClient {
                 }
             }
         }
-        task.resume()
+        task.resume()*/
     }
 
    // DBClient()

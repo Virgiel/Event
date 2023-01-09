@@ -112,6 +112,7 @@ struct CarouselExample: View {
                         }
                     }
                     Spacer().frame(height: 10)
+                    Divider()
                 }
                         .frame(maxWidth: .infinity)
                         .background(Color(.systemFill))
