@@ -8,7 +8,7 @@ func fmtEvent(_ minutes: ClosedRange<Int>) -> String {
     return "\(fmtMinutes(minutes.first!)) - \(fmtMinutes(minutes.last!)) · \(minutes.count - 1) min"
 }
 
-let daySize = CGFloat(120)
+let daySize = CGFloat(60)
 
 struct EventDetailView: View {
     let model: ViewModel
@@ -55,7 +55,7 @@ struct EventView: View {
     let schedule: Schedule
     let minutes: ClosedRange<Int>
     var body: some View {
-        // let height = CGFloat(minutes.count) * 2; TODO get our beautiful UI back on track
+         let height = CGFloat(minutes.count);
         NavigationLink {
             EventDetailView(model: model, minutes: minutes, schedule: schedule)
         } label: {
@@ -69,7 +69,7 @@ struct EventView: View {
                 Text(fmtEvent(minutes))
                 Text(schedule.location)
                 Spacer(minLength: 0)
-            }//.frame(height: height)
+            }//.frame(height: height) //TODO get our beautiful UI back on track
                 .frame(maxWidth: .infinity)
                 .padding(8)
                 .background(color.opacity(0.2))
@@ -83,6 +83,7 @@ struct EventView: View {
 // As two events can happen at the same time, our beautiful UI cannot handle them.
 // We sadly do not have enough time to handle this ... :/
 
+/// List of event during a single day
 struct Day: View {
     let model: ViewModel
     let hours: Range<Int>
@@ -111,8 +112,8 @@ struct Day: View {
                     }
                 }
                 ForEach(events, id: \.self.1.activity) { (minutes, schedule) in
-                    let offset = CGFloat(minutes.first!) * 2// - CGFloat(hours.first!) * daySize;
-                    EventView(schedule: schedule, minutes: minutes).offset(y: offset)
+                    //let offset = CGFloat(minutes.first!) //- CGFloat(hours.first!) * daySize;
+                    EventView(model: model, schedule: schedule, minutes: minutes).offset(y: offset)
                 }
             }
         }

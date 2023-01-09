@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// State of the Carousel view
 class CarouselState: ObservableObject {
     @Published var count: Int
     @Published var selected: Int;
@@ -30,6 +31,7 @@ class CarouselState: ObservableObject {
     }
 }
 
+/// Carousel view which can slide between multiple column having a common scroll position
 struct Carousel<Content: View>: View {
     @GestureState private var isDetectingLongPress = false
     @State private var dragOff: CGFloat? = nil
@@ -70,5 +72,3 @@ struct Carousel<Content: View>: View {
         }
     }
 }
-
-let color = [Color.red, Color.blue, Color.yellow];

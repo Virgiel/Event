@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// List all people you can interact with during the event
 struct PeopleList: View {
     let speakers: [People]
     let attendes: [People]
