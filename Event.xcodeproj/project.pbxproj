@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		71470AA5296C18A200BE04D8 /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71470AA4296C18A200BE04D8 /* EventDetailView.swift */; };
 		71C3B17129475E0F008CEA2A /* EventApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C3B17029475E0F008CEA2A /* EventApp.swift */; };
 		71C3B17329475E0F008CEA2A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C3B17229475E0F008CEA2A /* ContentView.swift */; };
 		71C3B17529475E10008CEA2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71C3B17429475E10008CEA2A /* Assets.xcassets */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		71470AA4296C18A200BE04D8 /* EventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailView.swift; sourceTree = "<group>"; };
 		71C3B16D29475E0F008CEA2A /* Event.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Event.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71C3B17029475E0F008CEA2A /* EventApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventApp.swift; sourceTree = "<group>"; };
 		71C3B17229475E0F008CEA2A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 		71C3B16F29475E0F008CEA2A /* Event */ = {
 			isa = PBXGroup;
 			children = (
+				71470AA4296C18A200BE04D8 /* EventDetailView.swift */,
 				71C3B17029475E0F008CEA2A /* EventApp.swift */,
 				71C3B17229475E0F008CEA2A /* ContentView.swift */,
 				71C3B17429475E10008CEA2A /* Assets.xcassets */,
@@ -272,6 +275,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71470AA5296C18A200BE04D8 /* EventDetailView.swift in Sources */,
 				71C3B19B294760C2008CEA2A /* PlanningView.swift in Sources */,
 				71C3B17329475E0F008CEA2A /* ContentView.swift in Sources */,
 				71C3B17129475E0F008CEA2A /* EventApp.swift in Sources */,
